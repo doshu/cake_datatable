@@ -59,6 +59,10 @@
         protected abstract function _prepareRowsAction($row);
         
         
+        protected function _getMassiveActions() {
+            return [];
+        }
+        
         public function getConfig() {
             //TODO
             //rimuovere campi che non devono esser visti su frontend
@@ -66,6 +70,7 @@
                 'columns' => $this->getColumns(),
                 'filters' => $this->getColumnsFilter(),
                 'has_actions' => $this->getHasActions(),
+                'massive_actions' => $this->_getMassiveActions(),
                 'backend_action' => \Cake\Routing\Router::url($this->_backendAction),
                 'default_order' => $this->getDefaultOrder(),
             ];
@@ -248,7 +253,8 @@
             $hasActions = $this->getHasActions();
             foreach($collection as $row) {
                 $_row = [
-                    'original' => $row
+                    'original' => $row,
+                    'id' => $row[$this->getEntityId()]
                 ];
                 
                 if($hasActions) {
@@ -256,7 +262,6 @@
                     $_row['actions'] = [];
                     foreach($actions as $action => $actionData) {
                         $url = $actionData['url'];
-                        $url[] = $row[$this->getEntityId()];
                         $_row['actions'][] = [
                             'code' => $action,
                             'url' => \Cake\Routing\Router::url($url),

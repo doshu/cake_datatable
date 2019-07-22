@@ -6,6 +6,12 @@
     overflow-y: hidden;
 }
 
+.datatable select.form-control.input-xs {
+    padding:2px 5px;
+    height: 26px;
+    line-height: 26px;
+}
+
 .datatable .datatable-loading {
     display:none;
 }
@@ -57,5 +63,36 @@
 .datatable .more-filters table {
     margin-top:10px;
 }
+
+.datatable .left-actions {
+    float:left;
+}
+
+.datatable .massive-actions {
+    float:right;
+}
+
+.datatable .massive-actions select, .datatable .show-per-page select {
+    display: inline-block!important;
+    width:auto;
+    max-width:100%;
+}   
+
+.datatable .massive-actions-container .selection-actions small {
+    padding-right:5px;
+    padding-left:5px;
+    display:inline-block;
+    border-left:1px solid #ccc;
+}
+
+.datatable .massive-actions-container .selection-actions small:first-of-type {
+    border-left:0;
+    padding-left:0;
+}
+
+
+
+
+
 
 

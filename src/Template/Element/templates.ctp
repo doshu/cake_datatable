@@ -7,6 +7,42 @@
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
+                    <td :colspan="tableColumnCount" class="massive-actions-container">
+                        <div class="left-actions">
+                            <div class="show-per-page">
+                                <small>
+                                    Mostra
+                                    <select class="form-control input-xs" v-model="limit">
+                                        <option v-for="p in [10, 20, 50, 100]" :value="p">{{ p }}</option>
+                                    </select>
+                                    per pagina
+                                </small>
+                            </div>
+                            <div class="selection-actions" v-if="hasMassiveActions">
+                                <small>
+                                    <a href="Javascript:void(0)" @click="selectVisible">Seleziona Tutto</a>
+                                </small>
+                                <small>
+                                    <a href="Javascript:void(0)" @click="unselectVisible">Deseleziona Tutto</a>
+                                </small>
+                                <small class="count-checked-rows" v-if="rowsChecked.length">
+                                    Selezionato {{ rowsChecked.length }} di {{ pagination.count }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="massive-actions" v-if="hasMassiveActions">
+                            <select class="form-control input-xs" v-model="currentMassiveAction">
+                                <option value=""></option>
+                                <option v-for="massiveActionConfig, massiveAction in config.massive_actions" :value="massiveAction">
+                                    {{ massiveActionConfig.title }}
+                                </option>
+                            </select>
+                            <button type="button" class="btn btn-primary btn-xs" :disabled="currentMassiveAction == null || !currentMassiveAction.length || rowsChecked.length == 0? true : false" @click="doMassiveAction">Esegui</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th v-if="hasMassiveActions"></th>
                     <th v-for="columnData, columnName in config.columns" v-show="showOnMobile(columnName)">
                         <a href="Javascript:void(0)" v-if="isColumnSortable(columnName)" @click="sortBy(columnName)">
                             {{ columnData.header }}
@@ -21,6 +57,7 @@
                     <th v-if="config.has_actions"></th>
                 </tr>
                 <tr>
+                    <th v-if="hasMassiveActions"></th>
                     <th v-for="columnData, columnName in config.columns" v-show="showOnMobile(columnName)">
                         <template v-if="isColumnFilterable(columnName) && config.filters[columnName]">
                             <div :is="config.filters[columnName] + 'Filter'" :column="columnName" :config="config" ref="filter"></div>
@@ -30,7 +67,7 @@
                 </tr>
                 <tr>
                     <th :colspan="tableColumnCount">
-                        <a href="Javascript:void(0)" class="pull-left btn btn-primary btn-xs" v-if="isMobile" @click="showMoreFilters">&#128269;</a>
+                        <a href="Javascript:void(0)" class="pull-left btn btn-primary btn-xs" v-if="isMobile" @click="showMoreFilters"><i class="fa fa-search"></i></a>
                         <div class="btn-group pull-right">
                             <button class="btn btn-primary btn-xs" type="button" @click="filter">Filtra</button>
                             <a href="Javascript:void(0)" class="btn btn-xs" @click="resetFilter">Reset</a>
@@ -59,6 +96,9 @@
                 </tr>
                 <template v-else v-for="row in rows">
                     <tr @click="showRowDetail">
+                        <td v-if="hasMassiveActions" class="text-center">
+                            <input type="checkbox" :value="row.id" v-model="rowsChecked"/>
+                        </td>
                         <td v-for="columnData, columnName in config.columns" v-show="showOnMobile(columnName)">
                             <template v-if="columnData.renderer">
                                <span v-html="row.columns[columnName]"></span>
@@ -118,11 +158,19 @@
         </table>
         <div class="paginator" v-if="pagination">
             <ul class="pagination">
+                <li class="prev" :class="[pagination.pageCount > 1 ? '' : 'disabled']">
+                    <a href="Javascript:void(0)" @click="goToPage(1)" v-if="pagination.pageCount > 1">
+                        <i class="fa fa-angle-double-left"></i>
+                    </a>
+                    <a v-else href="Javascript:void(0)" onclick="return false;">
+                        <i class="fa fa-angle-double-left"></i>
+                    </a>
+                </li>
                 <li class="prev" :class="[pagination.prevPage ? '' : 'disabled']">
                     <a href="Javascript:void(0)" @click="goToPage(pagination.page - 1)" v-if="pagination.prevPage">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a href="Javascript:void(0)" onclick="return false;">
+                    <a v-else href="Javascript:void(0)" onclick="return false;">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 </li>
@@ -133,8 +181,16 @@
                     <a href="Javascript:void(0)" @click="goToPage(pagination.page + 1)" v-if="pagination.nextPage">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                    <a href="Javascript:void(0)" onclick="return false;">
+                    <a v-else href="Javascript:void(0)" onclick="return false;">
                         <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="prev" :class="[pagination.pageCount > 1 ? '' : 'disabled']">
+                    <a href="Javascript:void(0)" @click="goToPage(pagination.pageCount)" v-if="pagination.pageCount > 1">
+                        <i class="fa fa-angle-double-right"></i>
+                    </a>
+                    <a v-else href="Javascript:void(0)" onclick="return false;">
+                        <i class="fa fa-angle-double-right"></i>
                     </a>
                 </li>
             </ul>

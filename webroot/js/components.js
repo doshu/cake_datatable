@@ -3,7 +3,11 @@ Vue.component('datatable', {
     data: function () {
         return {
             rows: [],
-            isMobile: false
+            isMobile: false,
+            currentMassiveAction: null,
+            rowsChecked: [],
+            pagination: null,
+            limit: 10
         }
     },
     props: {
@@ -42,7 +46,8 @@ Vue.component('datatable', {
             
             //get pagination params
             let q = {
-                'page': this.current_page
+                'page': this.current_page,
+                'limit': this.limit
             };
             
             if(this.sort_column) {
@@ -76,10 +81,18 @@ Vue.component('datatable', {
                 });
                 
         },
-        doPostAction: function(url, confirm) {
+        doPostAction: function(url, confirm, data) {
             let _doPostAction = function() {
                 let id = Math.random().toString(36).substr(2,9); //random id
-                let form = $('<form method="post" id="'+id+'" action="'+url+'"></form>');
+                let form = $('<form method="post" id="'+id+'"></form>');
+                form.attr('action', url);
+                if(data) {
+                    for(let rowId of data) {
+                        var _data = $('<input type="hidden" name="ids[]"/>');
+                        _data.attr('value', rowId);
+                        form.append(_data);
+                    }
+                }
                 $('body').append(form);
                 form.submit();
             }
@@ -100,10 +113,13 @@ Vue.component('datatable', {
             this.loadRows();
         },
         goToPage: function(page) {
-            if(page != this.current_page && page >= 1 && page <= this.paginate.pageCount) {
+            if(page != this.current_page && page >= 1 && page <= this.pagination.pageCount) {
                 this.current_page = page;
                 this.loadRows();
             }
+        },
+        changeLimit: function() {
+            this.loadRows();
         },
         filter: function() {
             this.current_filters = {};
@@ -136,6 +152,24 @@ Vue.component('datatable', {
         },
         showMoreFilters: function() {
             $(this.$el).find('.more-filters').toggle();
+        },
+        selectVisible: function() {
+            var _cheked = [];
+            for(let row of this.rows) {
+                _cheked.push(row.id);
+            }
+            this.rowsChecked = _cheked;
+        },
+        unselectVisible: function() {
+            this.rowsChecked = [];
+        },
+        doMassiveAction: function() {
+            var action = this.currentMassiveAction;
+            if(action) {
+                var url = this.config.massive_actions[action].url;
+                var confirm = this.config.massive_actions[action].confirm ? this.config.massive_actions[action].confirm : false;
+                this.doPostAction(url, confirm, this.rowsChecked);
+            }
         }
     },
     created: function() {
@@ -144,7 +178,7 @@ Vue.component('datatable', {
         this.sort_direction = null;
         this.current_page = 1;
         this.current_filters = {};
-        
+
         this.columnIndex = {};
         var index = 0;
         for(columnName in this.config.columns) {
@@ -174,7 +208,18 @@ Vue.component('datatable', {
             if(this.config.has_actions) {
                 columnCount += 1;
             }
+            if(this.hasMassiveActions) {
+                columnCount += 1;
+            }
             return columnCount;
+        },
+        hasMassiveActions: function() {
+            return Object.keys(this.config.massive_actions).length > 0;
+        }
+    },
+    watch: {
+        limit: function() {
+            this.changeLimit();
         }
     }
 });
