@@ -331,7 +331,7 @@
         }
         
         public function _formatText($value, $column, $options = []) {
-            return h($value);
+            return $value;
         }
         
         public function _formatElement($value, $column, $row, $options = []) {
