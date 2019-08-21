@@ -194,7 +194,7 @@
                     </a>
                 </li>
             </ul>
-            <p>{{ pagination.page }} di {{ pagination.pageCount }}</p>
+            <p>{{ pagination.page }} di {{ pagination.pageCount }}, {{ pagination.count }} elementi totali</p>
         </div>
     
     </div>
