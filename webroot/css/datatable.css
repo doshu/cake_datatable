@@ -44,6 +44,7 @@
 
 .datatable thead th .select2-container {
     width:100%!important;
+    position:relative!important;
 }
 
 

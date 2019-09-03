@@ -209,10 +209,10 @@
 <template id="range-filter-template">
     <div class="range-filter">
         <div>
-            <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" />
+            Da <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" />
         </div>
         <div>
-            <input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" />
+            A<input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" />
         </div>
     </div>
 </template>

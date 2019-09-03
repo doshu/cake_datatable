@@ -123,6 +123,7 @@ Vue.component('datatable', {
         },
         filter: function() {
             this.current_filters = {};
+            this.current_page = 1;
             if(this.$refs.filter) {
                 for(filter of this.$refs.filter) {
                     this.current_filters[filter.column] = filter.getFilterValue();
@@ -334,7 +335,7 @@ Vue.component('selectFilter', {
             return $(this.$refs.value).val();
         },
         reset: function() {
-            $(this.$refs.value).val('');
+            $(this.$refs.value).val('').change();
         }
     },
     mounted: function() {
@@ -342,6 +343,7 @@ Vue.component('selectFilter', {
         setTimeout(function() {
             $(that.$refs.value).select2();
         }, 0);
+        
     },
     updated: function() {
         var that = this;
