@@ -137,7 +137,7 @@
             if($this->getColumnType($column) == 'bool') {
                 return [1 => __('Sì'), 0 => __('No')];
             }
-            return isset($this->_columns[$column]['options'])?$this->_columns[$column]['options']:$this->getColumnEnum($column);
+            return isset($this->_columns[$column]['options'])?$this->_columns[$column]['options']:[];
         }
         
         public function getColumnRenderer($column) {
@@ -320,8 +320,13 @@
             }
             $enum = $this->_enumFlattenOptions[$column];
             
-            if($enum && isset($enum[(string)$value])) {
-                return $enum[(string)$value];
+            if($enum) {
+                if(isset($enum[$value])) {
+                    return $enum[$value];
+                }
+                if(isset($enum[(string)$value])) {
+                    return $enum[(string)$value];
+                }
             }
             return $value;
         }
