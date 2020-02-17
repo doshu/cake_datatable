@@ -86,6 +86,11 @@ Vue.component('datatable', {
                 let id = Math.random().toString(36).substr(2,9); //random id
                 let form = $('<form method="post" id="'+id+'"></form>');
                 form.attr('action', url);
+                if(_CSRF_TOKEN != undefined) { //_CSRF_TOKEN is a global variable
+                    var _csrfToken = $('<input type="hidden" name="_csrfToken"/>');
+                    _csrfToken.attr('value', _CSRF_TOKEN);
+                    form.append(_csrfToken);
+                }
                 if(data) {
                     for(let rowId of data) {
                         var _data = $('<input type="hidden" name="ids[]"/>');
