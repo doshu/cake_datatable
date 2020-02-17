@@ -59,6 +59,11 @@
         protected abstract function _prepareRowsAction($row);
         
         
+        protected function _addRowOptions($row) {
+            return [];
+        }
+        
+        
         protected function _getMassiveActions() {
             return [];
         }
@@ -254,7 +259,8 @@
             foreach($collection as $row) {
                 $_row = [
                     'original' => $row,
-                    'id' => $row[$this->getEntityId()]
+                    'id' => $row[$this->getEntityId()],
+                    'options' => $this->_addRowOptions($row)
                 ];
                 
                 if($hasActions) {

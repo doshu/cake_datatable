@@ -171,6 +171,12 @@ Vue.component('datatable', {
                 var confirm = this.config.massive_actions[action].confirm ? this.config.massive_actions[action].confirm : false;
                 this.doPostAction(url, confirm, this.rowsChecked);
             }
+        },
+        getRowClasses: function(row) {
+            if(row['options'] != null && "class" in row['options']) {
+                return row['options']['class'];
+            }
+            return [];
         }
     },
     created: function() {

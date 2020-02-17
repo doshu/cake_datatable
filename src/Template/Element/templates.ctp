@@ -95,7 +95,7 @@
                     </td>    
                 </tr>
                 <template v-else v-for="row in rows">
-                    <tr @click="showRowDetail">
+                    <tr @click="showRowDetail" :class="getRowClasses(row)">
                         <td v-if="hasMassiveActions" class="text-center">
                             <input type="checkbox" :value="row.id" v-model="rowsChecked"/>
                         </td>
