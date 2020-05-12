@@ -17,6 +17,8 @@
         
         protected $_enumFlattenOptions = [];
         
+        protected $_defaultFilters = [];
+        
         public function __construct($backendAction, $controller) {
             $this->_backendAction = $backendAction;
             $this->_controller = $controller;
@@ -206,6 +208,14 @@
             return $clojure;
         }   
         
+        public function setDefaultFilters($filters) {
+            $this->_defaultFilters = $filters;
+        }
+        
+        public function getDefaultFilters() {
+            return $this->_defaultFilters;
+        }
+        
         protected function _setEntityId($id) {
             $this->_entityId = $id;
         }
@@ -218,7 +228,7 @@
         
             $queryParams = $this->_controller->request->getQueryParams();
             
-            $filters = $queryParams['filter'] ?? [];
+            $filters = ($queryParams['filter'] ?? []) + $this->getDefaultFilters();
             
             if($filters) {
                 foreach($filters as $column => $value) {
