@@ -308,7 +308,7 @@
         public function _formatDatetime($value, $column, $row, $options = []) {
             //use i18n format
             $format = $options['format'] ?? null;
-            if($format) {
+            if($format && $value) {
                 return $value->format($format);
             }
             return (string) $value;
@@ -316,7 +316,7 @@
         
         public function _formatDate($value, $column, $row, $options = []) {
             $format = $options['format'] ?? null;
-            if($format) {
+            if($format && $value) {
                 return $value->format($format);
             }
             return (string) $value;
