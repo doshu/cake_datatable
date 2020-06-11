@@ -225,8 +225,7 @@
         }
         
         public function prepareCollection($collection) {
-        
-            $queryParams = $this->_controller->request->getQueryParams();
+            $queryParams = $this->_controller->getRequest()->getQueryParams();
             
             $filters = ($queryParams['filter'] ?? []) + $this->getDefaultFilters();
             
@@ -256,12 +255,12 @@
             //check sort column and change with real sort index
             if(isset($queryParams['sort'])) {
                 $queryParams['sort'] = $this->getColumnSortIndex($queryParams['sort']);
-                $this->_controller->request = $this->_controller->request->withQueryParams($queryParams);
+                $this->_controller->setRequest($this->_controller->getRequest()->withQueryParams($queryParams));
             }
             
             //pagination
             $this->_controller->paginate($collection, $options);
-            $paging = $this->_controller->request->getParam('paging');
+            $paging = $this->_controller->getRequest()->getAttribute('paging');
             $paginationParams = $paging && $paging[$collection->getRepository()->getAlias()] ? $paging[$collection->getRepository()->getAlias()] : null; 
             
             $data = [];
@@ -301,7 +300,7 @@
             
             $this->_controller->set('data', $data);
             $this->_controller->set('pagination', $paginationParams);
-            $this->_controller->set('_serialize', ['data', 'pagination']);
+            $this->_controller->viewBuilder()->setOption('serialize', ['data', 'pagination']);
             
             return $collection;
         }
