@@ -136,6 +136,12 @@ Vue.component('datatable', {
             }
             this.loadRows();
         },
+        autoFilter: function() {
+            if(this.autoFilterTimeout != null) {
+                clearTimeout(this.autoFilterTimeout);
+            }
+            this.autoFilterTimeout = setTimeout(this.filter, 300);
+        },
         resetFilter: function() {
             this.current_filters = {};
             if(this.$refs.filter) {
@@ -201,7 +207,7 @@ Vue.component('datatable', {
     },
     mounted: function() {
         var that = this;
-        
+        this.autoFilterTimeout = null;
         if(this.config.default_order) {
             this.sort_column = this.config.default_order.column;
             this.sort_direction = this.config.default_order.direction;
@@ -289,6 +295,9 @@ var filterMixin = {
         },
         reset: function() {
             return false;
+        },
+        onChange: function() {
+            this.$emit('filter')
         }
     }
 }
@@ -352,14 +361,18 @@ Vue.component('selectFilter', {
     mounted: function() {
         var that = this;
         setTimeout(function() {
-            $(that.$refs.value).select2();
+            $(that.$refs.value).select2().on("select2:select", (e) => {
+                that.$refs.value.dispatchEvent(new Event('change', { target: e.target }));
+            });
         }, 0);
         
     },
     updated: function() {
         var that = this;
         setTimeout(function() {
-            $(that.$refs.value).select2();
+            $(that.$refs.value).select2().on("select2:select", (e) => {
+                that.$refs.value.dispatchEvent(new Event('change', { target: e.target }));
+            });
         }, 0);
     }
 });

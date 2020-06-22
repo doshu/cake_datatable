@@ -60,7 +60,7 @@
                     <th v-if="hasMassiveActions"></th>
                     <th v-for="columnData, columnName in config.columns" v-show="showOnMobile(columnName)">
                         <template v-if="isColumnFilterable(columnName) && config.filters[columnName]">
-                            <div :is="config.filters[columnName] + 'Filter'" :column="columnName" :config="config" ref="filter"></div>
+                            <div :is="config.filters[columnName] + 'Filter'" :column="columnName" :config="config" ref="filter" @filter="autoFilter"></div>
                         </template>
                     </th>
                     <th v-if="config.has_actions"></th>
@@ -79,7 +79,7 @@
                                     <tr v-for="columnData, columnName in config.columns" v-if="!showOnMobile(columnName) && isColumnFilterable(columnName) && config.filters[columnName]">
                                         <td><b>{{ columnData.header }}</b></td>
                                         <td>
-                                            <div :is="config.filters[columnName] + 'Filter'" :column="columnName" :config="config" ref="filter"></div>
+                                            <div :is="config.filters[columnName] + 'Filter'" :column="columnName" :config="config" ref="filter" @filter="autoFilter"></div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -202,24 +202,24 @@
 
 <template id="text-filter-template">
     <div class="text-filter">
-        <input :type="getFieldType()" class="form-control" :placeholder="'filtra per ' + getColumnName()" ref="value" />
+        <input :type="getFieldType()" class="form-control" :placeholder="'filtra per ' + getColumnName()" ref="value" @input="onChange"/>
     </div>
 </template>
 
 <template id="range-filter-template">
     <div class="range-filter">
         <div>
-            Da <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" />
+            Da <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" @input="onChange"/>
         </div>
         <div>
-            A<input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" />
+            A<input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" @input="onChange"/>
         </div>
     </div>
 </template>
 
 <template id="select-filter-template">
     <div class="select-filter">
-        <select class="form-control select-2" ref="value">
+        <select class="form-control select-2" ref="value" @input="onChange">
             <option value=""></option>
             <template v-for="label, value in getOptions()">
                 <template v-if="typeof(label) == 'object'">
