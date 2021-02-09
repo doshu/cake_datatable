@@ -1,5 +1,5 @@
 {
-    "name": "Doshu/Datatable",
+    "name": "doshu/datatable",
     "description": "Datatable plugin for CakePHP",
     "type": "cakephp-plugin",
     "license": "MIT",
