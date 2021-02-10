@@ -10,7 +10,7 @@
         
         public $helpers = ['Html'];
         
-        public function display(\Datatable\Model\TableSchema $table, array options = []) {
+        public function display(\Datatable\Model\TableSchema $table, array $options = []) {
             if(!static::$_templateLoaded) {
                 $this->_loadTemplates();
             }
