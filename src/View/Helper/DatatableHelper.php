@@ -10,11 +10,12 @@
         
         public $helpers = ['Html'];
         
-        public function display(\Datatable\Model\TableSchema $table) {
+        public function display(\Datatable\Model\TableSchema $table, array options = []) {
             if(!static::$_templateLoaded) {
                 $this->_loadTemplates();
             }
-            echo $this->getView()->element('Datatable.display', ['table' => $table]);
+            
+            echo $this->getView()->element('Datatable.display', ['table' => $table, 'scriptBlock' => $options['scriptBlock'] ?? null]);
         }
         
         protected function _loadTemplates() {

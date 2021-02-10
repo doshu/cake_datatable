@@ -212,7 +212,7 @@
             Da <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" @input="onChange"/>
         </div>
         <div>
-            A<input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" @input="onChange"/>
+            A <input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" @input="onChange"/>
         </div>
     </div>
 </template>
