@@ -110,6 +110,15 @@ Vue.component('datatable', {
                 _doPostAction();
             }
         },
+        actionAttributes: function(actionData) {
+            let additionalAttributes = {}
+            if(actionData.dataset) {
+                for(dataAttribute in actionData.dataset) {
+                    additionalAttributes['data-'+dataAttribute] = actionData.dataset[dataAttribute];
+                }
+            }
+            return additionalAttributes;
+        },
         sortBy: function(column) {
             let direction = this.sort_column == column ? (this.sort_direction == 'asc' ? 'desc': 'asc') : 'asc';
             this.sort_column = column;

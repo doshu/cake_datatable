@@ -110,8 +110,8 @@
                         <td class="text-center" v-if="config.has_actions">
                             <div class="btn-group">
                                 <template v-if="row.actions.length && !isMobile">
-                                    <a v-if="row.actions[0].type == 'get'" :href="row.actions[0].url" class="btn btn-sm" :class="['row-action-' + row.actions[0].code]">{{ row.actions[0].title }}</a>
-                                    <a v-else href="Javascript:void(0)" @click="doPostAction(row.actions[0].url, row.actions[0].confirm)" class="btn btn-sm" :class="['row-action-' + row.actions[0].code]">{{ row.actions[0].title }}</a>
+                                    <a v-if="row.actions[0].type == 'get'" :href="row.actions[0].url" class="btn btn-sm" :class="['row-action-' + row.actions[0].code]" v-bind="actionAttributes(row.actions[0])">{{ row.actions[0].title }}</a>
+                                    <a v-else href="Javascript:void(0)" @click="doPostAction(row.actions[0].url, row.actions[0].confirm)" class="btn btn-sm" :class="['row-action-' + row.actions[0].code]" v-bind="actionAttributes(row.actions[0])">{{ row.actions[0].title }}</a>
                                 </template>
                                 <template v-if="row.actions.length > (isMobile ? 0 : 1)">
                                     <button type="button" class="btn btn-sm btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
@@ -122,8 +122,8 @@
                                         <template v-for="action, index in row.actions">
                                             <template v-if="index >= (isMobile ? 0 : 1)">
                                                 <li>
-                                                    <a v-if="action.type == 'get'" :href="action.url" :class="['row-action-' + action.code]">{{ action.title }}</a>
-                                                    <a v-else href="Javascript:void(0)" @click="doPostAction(action.url, action.confirm)" :class="['row-action-' + action.code]">{{ action.title }}</a>
+                                                    <a v-if="action.type == 'get'" :href="action.url" :class="['row-action-' + action.code]"  v-bind="actionAttributes(action)">{{ action.title }}</a>
+                                                    <a v-else href="Javascript:void(0)" @click="doPostAction(action.url, action.confirm)" :class="['row-action-' + action.code]"  v-bind="actionAttributes(action)">{{ action.title }}</a>
                                                 </li>
                                             </template>
                                         </template>
