@@ -282,7 +282,8 @@
                             'url' => \Cake\Routing\Router::url($url),
                             'type' => $actionData['type'] ?? 'get',
                             'title' => $actionData['title'],
-                            'confirm' => $actionData['confirm'] ?? null
+                            'confirm' => $actionData['confirm'] ?? null,
+                            'dataset' => $actionData['dataset'] ?? []
                         ];
                     }
                     
