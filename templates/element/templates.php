@@ -174,7 +174,7 @@
                         <i class="fa fa-angle-left"></i>
                     </a>
                 </li>
-                <li v-for="page in pagination.pageCount" :class="[page == pagination.page ? 'active' : '']">
+                <li v-for="page in displayPages" :class="[page == pagination.page ? 'active' : '']">
                     <a href="Javascript:void(0)" @click="goToPage(page)">{{ page }}</a>
                 </li>
                 <li class="next" :class="[pagination.nextPage ? '' : 'disabled']">

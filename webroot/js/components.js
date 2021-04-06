@@ -242,6 +242,21 @@ Vue.component('datatable', {
         },
         hasMassiveActions: function() {
             return Object.keys(this.config.massive_actions).length > 0;
+        },
+        displayPages: function() {
+            let pages = [];
+            let start = Math.max(1, this.current_page - 3);
+            if(start + 6 > this.pagination.pageCount) {
+                start = Math.max(1, start - (start + 6 - this.pagination.pageCount));
+            }
+            let end = Math.min(start + 6, this.pagination.pageCount);
+            for(i = start; i <= end; i++) {
+                pages.push(i);
+            }
+            return pages;
+        },
+        lastPage: function() {
+            return 
         }
     },
     watch: {
