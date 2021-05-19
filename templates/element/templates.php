@@ -2,7 +2,7 @@
     <div class="datatable" :class="{'datatable-responsive': isMobile}">
         <div class="datatable-loading">
             <div class="backdrop"></div>
-            <div class="loading-text">Caricamento</div>
+            <div class="loading-text"><?= __('Caricamento') ?></div>
         </div>
         <table class="table table-hover table-bordered">
             <thead>
@@ -11,22 +11,22 @@
                         <div class="left-actions">
                             <div class="show-per-page">
                                 <small>
-                                    Mostra
+                                    <?= __('Mostra') ?>
                                     <select class="form-control input-xs" v-model="limit">
                                         <option v-for="p in [10, 20, 50, 100]" :value="p">{{ p }}</option>
                                     </select>
-                                    per pagina
+                                    <?= __('per pagina') ?>
                                 </small>
                             </div>
                             <div class="selection-actions" v-if="hasMassiveActions">
                                 <small>
-                                    <a href="Javascript:void(0)" @click="selectVisible">Seleziona Tutto</a>
+                                    <a href="Javascript:void(0)" @click="selectVisible"><?= __('Seleziona Tutto') ?></a>
                                 </small>
                                 <small>
-                                    <a href="Javascript:void(0)" @click="unselectVisible">Deseleziona Tutto</a>
+                                    <a href="Javascript:void(0)" @click="unselectVisible"><?= __('Deseleziona Tutto') ?></a>
                                 </small>
                                 <small class="count-checked-rows" v-if="rowsChecked.length">
-                                    Selezionato {{ rowsChecked.length }} di {{ pagination.count }}
+                                    <?= __('Selezionato {0} di {1}', '{{ rowsChecked.length }}', '{{ pagination.count }}') ?>
                                 </small>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                                     {{ massiveActionConfig.title }}
                                 </option>
                             </select>
-                            <button type="button" class="btn btn-primary btn-xs" :disabled="currentMassiveAction == null || !currentMassiveAction.length || rowsChecked.length == 0? true : false" @click="doMassiveAction">Esegui</button>
+                            <button type="button" class="btn btn-primary btn-xs" :disabled="currentMassiveAction == null || !currentMassiveAction.length || rowsChecked.length == 0? true : false" @click="doMassiveAction"><?= __('Esegui') ?></button>
                         </div>
                     </td>
                 </tr>
@@ -69,11 +69,11 @@
                     <th :colspan="tableColumnCount">
                         <a href="Javascript:void(0)" class="pull-left btn btn-primary btn-xs" v-if="isMobile" @click="showMoreFilters"><i class="fa fa-search"></i></a>
                         <div class="btn-group pull-right">
-                            <button class="btn btn-primary btn-xs" type="button" @click="filter">Filtra</button>
-                            <a href="Javascript:void(0)" class="btn btn-xs" @click="resetFilter">Reset</a>
+                            <button class="btn btn-primary btn-xs" type="button" @click="filter"><?= __('Filtra') ?></button>
+                            <a href="Javascript:void(0)" class="btn btn-xs" @click="resetFilter"><?= __('Reset') ?></a>
                         </div>
                         <div class="more-filters" v-show="false" v-if="isMobile">
-                            <div><b>Filtri aggiuntivi</b></div>
+                            <div><b><?= __('Filtri aggiuntivi') ?></b></div>
                             <table class="table table-striped">
                                 <tbody>
                                     <tr v-for="columnData, columnName in config.columns" v-if="!showOnMobile(columnName) && isColumnFilterable(columnName) && config.filters[columnName]">
@@ -91,7 +91,7 @@
             <tbody>
                 <tr v-if="rows.length == 0">
                     <td :colspan="tableColumnCount" class="text-center">
-                        Nessun dato trovato
+                        <?= __('Nessun dato trovato') ?>
                     </td>    
                 </tr>
                 <template v-else v-for="row in rows">
@@ -194,7 +194,7 @@
                     </a>
                 </li>
             </ul>
-            <p>{{ pagination.page }} di {{ pagination.pageCount }}, {{ pagination.count }} elementi totali</p>
+            <p><?= __('{0} di {1}, {2} elementi totali', '{{ pagination.page }}', '{{ pagination.pageCount }}', '{{ pagination.count }}') ?></p>
         </div>
     
     </div>
@@ -202,17 +202,17 @@
 
 <template id="text-filter-template">
     <div class="text-filter">
-        <input :type="getFieldType()" class="form-control" :placeholder="'filtra per ' + getColumnName()" ref="value" @input="onChange"/>
+        <input :type="getFieldType()" class="form-control" :placeholder="'<?= __('filtra per') ?> ' + getColumnName()" ref="value" @input="onChange"/>
     </div>
 </template>
 
 <template id="range-filter-template">
     <div class="range-filter">
         <div>
-            Da <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" @input="onChange"/>
+            <?= __('Da') ?> <input :type="getFieldType()" class="form-control" :placeholder="'filtra da ' + getColumnName()" ref="from" @input="onChange"/>
         </div>
         <div>
-            A <input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" @input="onChange"/>
+            <?= __('A') ?> <input :type="getFieldType()" class="form-control" :placeholder="'filtra a ' + getColumnName()" ref="to" @input="onChange"/>
         </div>
     </div>
 </template>
