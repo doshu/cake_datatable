@@ -244,11 +244,11 @@
             
             //enable sort fields
             $options = [
-                'sortWhitelist' => []
+                'sortableFields' => []
             ];
             foreach($this->getColumns() as $column => $columnData) {
                 if($this->getColumnSortable($column)) {
-                    $options['sortWhitelist'][] = $this->getColumnSortIndex($column);
+                    $options['sortableFields'][] = $this->getColumnSortIndex($column);
                 }
             }
             
