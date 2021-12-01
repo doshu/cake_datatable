@@ -78,6 +78,11 @@ Vue.component('datatable', {
                 })
                 .always(function() {
                     $(that.$el).removeClass('loading');
+                    const updateEvent = new CustomEvent('update', {
+                        bubbles: true,
+                        detail: { datatable: that }
+                    });
+                    that.$el.dispatchEvent(updateEvent);
                 });
                 
         },
