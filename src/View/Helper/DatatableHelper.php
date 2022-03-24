@@ -15,7 +15,10 @@
                 $this->_loadTemplates();
             }
             
-            echo $this->getView()->element('Datatable.display', ['table' => $table, 'scriptBlock' => $options['scriptBlock'] ?? null]);
+            echo $this->getView()->element(
+                'Datatable.display', 
+                ['table' => $table, 'name' => $options['name'] ?? null, 'scriptBlock' => $options['scriptBlock'] ?? null]
+            );
         }
         
         protected function _loadTemplates() {
