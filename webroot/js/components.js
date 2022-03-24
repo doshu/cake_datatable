@@ -192,9 +192,14 @@ Vue.component('datatable', {
         doMassiveAction: function() {
             var action = this.currentMassiveAction;
             if(action) {
-                var url = this.config.massive_actions[action].url;
-                var confirm = this.config.massive_actions[action].confirm ? this.config.massive_actions[action].confirm : false;
-                this.doPostAction(url, confirm, this.rowsChecked);
+                if(this.config.massive_actions[action].callback) {
+                    window[this.config.massive_actions[action].callback](this.rowsChecked);
+                }
+                else {
+                    var url = this.config.massive_actions[action].url;
+                    var confirm = this.config.massive_actions[action].confirm ? this.config.massive_actions[action].confirm : false;
+                    this.doPostAction(url, confirm, this.rowsChecked);
+                }
             }
         },
         getRowClasses: function(row) {
